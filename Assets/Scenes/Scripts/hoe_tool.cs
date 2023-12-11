@@ -10,7 +10,7 @@ public class hoe_tool : MonoBehaviour
     void Log(Collider2D collision, [CallerMemberName] string message = null)
     {
         Debug.Log(collision.gameObject.name.ToString());
-        collision.gameObject.GetComponent<PlotManager>().Harvest();
+        collision.gameObject.GetComponent<PlotManager>().Destroy();
     }
 
 
@@ -45,6 +45,6 @@ public class hoe_tool : MonoBehaviour
     private void OnMouseUp()
     {
         isBeing = false;
-
+        this.gameObject.transform.localPosition = new Vector3(-7, 2, 0);
     }
 }

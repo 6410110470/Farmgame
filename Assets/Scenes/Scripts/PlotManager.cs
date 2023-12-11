@@ -5,18 +5,24 @@ using UnityEngine;
 public class PlotManager : MonoBehaviour
 {
     bool isPlanted = false;
-    public SpriteRenderer plant;
+    public SpriteRenderer plant; 
     int plantStage = 0;
     public PlantObject selectplant;
     float timer;
+    SpriteRenderer coin;
+    float coin_timer;
+
     SpriteRenderer Plot;
     bool isPreplot = false;
     public Sprite PrePlot;
     FarmManager fm;
+
+
     void Start()
     {
         Plot = GetComponent<SpriteRenderer>();
         fm = FindObjectOfType<FarmManager>();
+        coin = transform.GetChild(1).GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -30,6 +36,14 @@ public class PlotManager : MonoBehaviour
                 timer = selectplant.timeBtwStages;
                 plantStage++;
                 UpdatePlant();
+            }
+        }
+        else
+        {
+            coin_timer -= Time.deltaTime;
+            if (coin_timer < 0)
+            {
+                coin.gameObject.SetActive(false);
             }
         }
 
@@ -50,32 +64,46 @@ public class PlotManager : MonoBehaviour
     private void OnMouseDown()
     {
         Debug.Log("Click");
-        if (isPlanted && plantStage == selectplant.plantStages.Length -1)
+        if (isPlanted == false)
         {
-            Harvest();
-        }
-        else
-        {
-            if (isPreplot == true)
+            if (isPreplot == true && fm.selected_plant.buyprice <= fm.money)
             {
                 Plant(fm.selected_plant);
             }
-
         }
+
     }
 
     public void Harvest()
     {
+        if (isPlanted)
+        {
+            if (plantStage == selectplant.plantStages.Length - 1)
+            {
+                isPlanted = false;
+                plant.gameObject.SetActive(false);
+                fm.Transaction(selectplant.sellprice);
+                coin.gameObject.SetActive(true);
+                coin_timer = 1f;  //Time in second per frame
+            }
+        }
+    }
+    public void Destroy()
+    {
         isPlanted = false;
-        plant.gameObject.SetActive(false);
+        plant.gameObject.SetActive(false);  
     }
     void Plant(PlantObject newPlant)
     {
         selectplant = newPlant;
         isPlanted = true;
+
+        fm.Transaction(-selectplant.buyprice);
+
         plantStage = 0;
         UpdatePlant();
         timer = selectplant.timeBtwStages;
+        coin.gameObject.SetActive(false);
         plant.gameObject.SetActive(true);
 
     }

@@ -4,13 +4,13 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NewBehaviourScript : MonoBehaviour
+public class Sickle : MonoBehaviour
 {
     void OnTriggerStay2D(Collider2D collision) => Log(collision);
     void Log(Collider2D collision, [CallerMemberName] string message = null)
     {
         Debug.Log(collision.gameObject.name.ToString());
-        collision.gameObject.GetComponent<PlotManager>().ChangeSprite();
+        collision.gameObject.GetComponent<PlotManager>().Harvest();
     }
 
 
@@ -36,7 +36,7 @@ public class NewBehaviourScript : MonoBehaviour
             Vector3 mousePos;
             mousePos = Input.mousePosition;
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-            
+
             startPosX = mousePos.x - this.transform.localPosition.x;
             startPosY = mousePos.y - this.transform.localPosition.y;
             isBeing = true;
@@ -45,6 +45,6 @@ public class NewBehaviourScript : MonoBehaviour
     private void OnMouseUp()
     {
         isBeing = false;
-        this.gameObject.transform.localPosition = new Vector3(-7, 4, 0);
+        this.gameObject.transform.localPosition = new Vector3(7, 4, 0);
     }
 }

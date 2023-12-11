@@ -23,7 +23,7 @@ public class PlantSelected : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Planttype.text = "Select : " + SE_plant.plantName;
+        //Planttype.text = "Select : " + SE_plant.plantName;
         fm.selected_plant = SE_plant;
     }
 }
